@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  tools:context=".TempoDesejadoActivity">
+
+  <TextView
+    android:id="@+id/textView3"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="120dp"
+    android:layout_marginTop="219dp"
+    android:layout_marginEnd="120dp"
+    android:text="Quão longa será a reunião?"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent" />
+
+  <EditText
+    android:id="@+id/duracao_desejada"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="16dp"
+    android:layout_marginTop="19dp"
+    android:layout_marginEnd="16dp"
+    android:ems="10"
+    android:inputType="textPersonName"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+  <Button
+    android:id="@+id/btn_selecionar_duracao"
+    style="@style/Widget.AppCompat.Button.Colored"
+    android:layout_width="142dp"
+    android:layout_height="45dp"
+    android:layout_marginStart="161dp"
+    android:layout_marginTop="13dp"
+    android:layout_marginEnd="162dp"
+    android:layout_marginBottom="368dp"
+    android:text="Selecionar"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/duracao_desejada"
+    app:layout_constraintVertical_bias="1.0" />
+
+  <Button
+    android:id="@+id/btn_verificar"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="16dp"
+    android:layout_marginEnd="16dp"
+    android:layout_marginBottom="27dp"
+    android:text="Verificar"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent" />
+</android.support.constraint.ConstraintLayout>

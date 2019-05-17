@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  tools:context=".CompromissoActivity">
+
+  <TextView
+    android:id="@+id/textView2"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="16dp"
+    android:layout_marginTop="16dp"
+    android:text="Novo compromisso:"
+    android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+    android:textColor="@color/colorPrimary"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent" />
+
+  <LinearLayout
+    android:layout_width="395dp"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="8dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginEnd="8dp"
+    android:orientation="vertical"
+    android:padding="10dp"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/textView2">
+
+    <TextView
+      android:id="@+id/textView5"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="Com quem?"
+      android:textSize="18sp" />
+
+    <EditText
+      android:id="@+id/participantes"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="10dp"
+      android:ems="10"
+      android:inputType="textPersonName" />
+
+    <TextView
+      android:id="@+id/textView10"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="Data"
+      android:textSize="18sp" />
+
+    <EditText
+      android:id="@+id/data"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:ems="10"
+      android:hint="Data"/>
+
+    <Button
+      android:id="@+id/btnSelecionarData"
+      style="@style/Widget.AppCompat.Button.Colored"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="Selecionar data"
+      android:textAllCaps="false"
+      android:textSize="18sp"
+      android:layout_marginBottom="10dp"/>
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="10dp"
+      android:orientation="horizontal"
+      android:weightSum="100">
+
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="50"
+        android:orientation="vertical">
+
+        <TextView
+          android:id="@+id/textView11"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:text="Horário de início"
+          android:textSize="18sp" />
+
+        <EditText
+          android:id="@+id/inicio"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:ems="10"
+          android:hint="Início"/>
+
+        <Button
+          android:id="@+id/btnSelecionarInicio"
+          style="@style/Widget.AppCompat.Button.Colored"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:text="Selecionar início"
+          android:textAllCaps="false"
+          android:textSize="18sp" />
+      </LinearLayout>
+
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="50"
+        android:orientation="vertical">
+
+        <TextView
+          android:id="@+id/textView12"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:text="Horário de término"
+          android:textSize="18sp" />
+
+        <EditText
+          android:id="@+id/termino"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:ems="10"
+          android:hint="Término"/>
+
+        <Button
+          android:id="@+id/btnSelecionarTermino"
+          style="@style/Widget.AppCompat.Button.Colored"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:text="Selecionar término"
+          android:textAllCaps="false"
+          android:textSize="18sp" />
+      </LinearLayout>
+    </LinearLayout>
+
+    <TextView
+      android:id="@+id/textView13"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="Dê um nome ao compromisso"
+      android:textSize="18sp" />
+
+    <EditText
+      android:id="@+id/nome"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:ems="10"
+      android:inputType="textPersonName" />
+
+  </LinearLayout>
+
+  <Button
+    android:id="@+id/btnSalvarCompromisso"
+    style="@style/Widget.AppCompat.Button.Colored"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="8dp"
+    android:layout_marginEnd="8dp"
+    android:layout_marginBottom="8dp"
+    android:text="Salvar"
+    android:textAllCaps="false"
+    android:textSize="18sp"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent" />
+
+</android.support.constraint.ConstraintLayout>

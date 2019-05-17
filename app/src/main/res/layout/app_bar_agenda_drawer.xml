@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <android.support.v7.widget.Toolbar
+      android:id="@+id/toolbar_agenda"
+      android:layout_width="match_parent"
+      android:layout_height="?attr/actionBarSize"
+      android:background="@color/white"
+      android:elevation="4dp"
+      android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+      app:titleTextColor="@color/colorPrimaryDark"/>
+
+    <View
+      android:id="@+id/sombra_toolbar"
+      android:layout_width="match_parent"
+      android:layout_height="2dp"
+      android:background="@drawable/toolbar_sombra"
+      app:layout_constraintTop_toBottomOf="@+id/toolbar_agenda" />
+
+  <Button
+    android:id="@+id/btn_novo_compromisso"
+    style="@style/Widget.AppCompat.Button.Colored"
+    android:layout_width="0dp"
+    android:layout_height="64dp"
+    android:layout_marginStart="8dp"
+    android:layout_marginBottom="8dp"
+    android:text="Novo compromisso"
+    android:textAllCaps="false"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toStartOf="@+id/qr"
+    app:layout_constraintStart_toStartOf="parent" />
+
+  <android.support.v7.widget.RecyclerView
+    android:id="@+id/lista_usuarios"
+    android:layout_width="0dp"
+    android:layout_height="0dp"
+    android:layout_marginStart="8dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginEnd="8dp"
+    android:layout_marginBottom="8dp"
+    app:layout_constraintBottom_toTopOf="@+id/btn_novo_compromisso"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/sombra_toolbar" />
+
+  <Button
+    android:id="@+id/qr"
+    style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
+    android:layout_width="50dp"
+    android:layout_height="50dp"
+    android:layout_marginStart="4dp"
+    android:layout_marginEnd="16dp"
+    android:layout_marginBottom="16dp"
+    android:background="@drawable/ic_qr_code"
+    android:backgroundTint="@color/colorAccent"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toEndOf="@+id/btn_novo_compromisso" />
+</android.support.constraint.ConstraintLayout>
