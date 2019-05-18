@@ -4,43 +4,52 @@
   android:layout_height="wrap_content"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   android:layout_marginBottom="5dp">
+
   <android.support.v7.widget.CardView
     android:id="@+id/cardview"
     android:layout_width="match_parent"
     android:layout_height="50dp">
+
     <LinearLayout
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       android:orientation="horizontal"
       android:weightSum="100">
+
       <TextView
+        android:id="@+id/nome_item"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:id="@+id/nome_item"
-        android:textSize="24sp"
-        android:textAlignment="viewStart"
         android:layout_marginStart="15dp"
         android:layout_marginTop="5dp"
-        android:layout_weight="50"/>
+        android:layout_weight="50"
+        android:text="Compromisso"
+        android:textAlignment="viewStart"
+        android:textSize="24sp" />
+
       <LinearLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="50"
         android:orientation="vertical"
         android:weightSum="100">
+
         <TextView
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
           android:id="@+id/data_item"
-          android:textAlignment="viewEnd"
-          android:layout_marginEnd="15dp"
-          android:layout_marginTop="5dp"/>
-        <TextView
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
+          android:layout_marginTop="5dp"
+          android:layout_marginEnd="15dp"
+          android:text="dd/MM/AA"
+          android:textAlignment="viewEnd" />
+
+        <TextView
           android:id="@+id/horario_item"
-          android:textAlignment="viewEnd"
-          android:layout_marginEnd="15dp"/>
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginEnd="15dp"
+          android:text="hh:mm até hh:mm"
+          android:textAlignment="viewEnd" />
       </LinearLayout>
     </LinearLayout>
   </android.support.v7.widget.CardView>
