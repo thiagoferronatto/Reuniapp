@@ -49,10 +49,12 @@ public class QRActivity extends AppCompatActivity {
 
     conta = GoogleSignIn.getLastSignedInAccount(this);
 
+    assert conta != null;
     String e = conta.getEmail();
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
+    assert e != null;
     DocumentReference df = db.collection("compromissos").document(e.substring(0, e.indexOf("@")));
 
     final AlertDialog carregando = new AlertDialog.Builder(this).setTitle("Aguarde").setMessage("Gerando QR").show();
@@ -66,6 +68,7 @@ public class QRActivity extends AppCompatActivity {
           if (document.exists()) {
             List<Compromisso> l = new ArrayList<>();
             for (int i = 0; i < document.getData().size(); ++i) {
+              @SuppressWarnings("unchecked")
               Map<String, Object> x = (Map<String, Object>) document.getData().get(Integer.toString(i));
               String
                 nome = (String) x.get("nome"),

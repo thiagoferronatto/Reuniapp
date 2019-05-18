@@ -3,6 +3,7 @@ package com.tcc.reuniapp;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.view.menu.MenuView;
@@ -56,7 +57,45 @@ public class CompromissoAdapter extends RecyclerView.Adapter<CompromissoAdapter.
       @Override
       public void onClick(View v) {
         if (context instanceof HorariosDisponiveisActivity) {
-          Log.i("instanceof", "HorariosDisponiveisActivity");
+          Intent intent = new Intent(context, CompromissoActivity.class);
+
+          String _inicio, _duracao, _termino;
+          _duracao = ((HorariosDisponiveisActivity) context).getIntent().getStringExtra("duracao");
+
+          int duracao = Integer.parseInt(_duracao.split(":")[0]) * 60 + Integer.parseInt(_duracao.split(":")[1]);
+
+          if (compromissos.get(i).getNome().startsWith("Antes")) {
+            int termino =
+              Integer.parseInt(compromissos.get(i).getNome().split(" ")[2].split(":")[0]) * 60 +
+              Integer.parseInt(compromissos.get(i).getNome().split(" ")[2].split(":")[1]);
+            int inicio = termino - duracao;
+            _inicio = (inicio / 60) + ":" + (inicio % 60);
+            _termino = (termino / 60) + ":" + (termino % 60);
+          } else if (compromissos.get(i).getNome().endsWith("diante")) {
+            int inicio =
+              Integer.parseInt(compromissos.get(i).getNome().split(" ")[0].split(":")[0]) * 60 +
+                Integer.parseInt(compromissos.get(i).getNome().split(" ")[0].split(":")[1]);
+            int termino = inicio + duracao;
+            _inicio = (inicio / 60) + ":" + (inicio % 60);
+            _termino = (termino / 60) + ":" + (termino % 60);
+          } else {
+            int inicio =
+              Integer.parseInt(compromissos.get(i).getNome().split(" até ")[0].split(":")[0]) * 60 +
+                Integer.parseInt(compromissos.get(i).getNome().split(" até ")[0].split(":")[1]);
+            int termino = inicio + duracao;
+            _inicio = (inicio / 60) + ":" + (inicio % 60);
+            _termino = (termino / 60) + ":" + (termino % 60);
+          }
+
+          Log.i("inicio", _inicio);
+          Log.i("termino", _termino);
+          Log.i("data", compromissos.get(i).getData());
+
+          //intent.putExtra("data", compromissos.get(i).getData());
+          // intent.putExtra("inicio", _inicio);
+          //intent.putExtra("termino", _termino);
+
+          // context.startActivity(intent);
         } else {
           new AlertDialog.Builder(context)
             .setTitle(compromissos.get(i).getNome())

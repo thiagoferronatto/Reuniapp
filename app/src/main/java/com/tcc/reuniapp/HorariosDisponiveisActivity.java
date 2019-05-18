@@ -239,8 +239,9 @@ public class HorariosDisponiveisActivity extends AppCompatActivity {
                   _terminoJ.split(":")[1]
                 ) * 60;
 
-                Log.i("fora", sugestoes.get(sugestoes.indexOf(j)).toString());
-                if ((inicioI > inicioJ && inicioI < terminoJ) || (terminoI > inicioJ && terminoI < terminoJ)) {
+                if ((inicioI >= inicioJ && inicioI < terminoJ) ||
+                    (terminoI > inicioJ && terminoI <= terminoJ) ||
+                    (inicioI <= inicioJ && terminoI >= terminoJ)) {
                   sugestoes.get(sugestoes.indexOf(j)).setCor("vermelho");
                 }
 
