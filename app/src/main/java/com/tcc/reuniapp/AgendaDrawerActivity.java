@@ -1,13 +1,9 @@
 package com.tcc.reuniapp;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -20,14 +16,12 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -39,9 +33,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -132,6 +124,7 @@ public class AgendaDrawerActivity extends AppCompatActivity
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
+    assert e != null;
     DocumentReference df = db.collection("compromissos").document(e.substring(0, e.indexOf("@")));
 
     final AlertDialog carregando = new AlertDialog.Builder(this).setTitle("Aguarde").setMessage("Carregando compromissos").show();
@@ -145,8 +138,9 @@ public class AgendaDrawerActivity extends AppCompatActivity
           assert document != null;
           if (document.exists()) {
             List<Compromisso> l = new ArrayList<>();
-            for (int i = 0; i < document.getData().size(); ++i) {
+            for (int i = 0; i < Objects.requireNonNull(document.getData()).size(); ++i) {
               Map<String, Object> x = (Map<String, Object>) document.getData().get(Integer.toString(i));
+              assert x != null;
               String
                 nome = (String) x.get("nome"),
                 data = (String) x.get("data"),
@@ -210,15 +204,11 @@ public class AgendaDrawerActivity extends AppCompatActivity
   @Override
   public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
     super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-    switch (requestCode) {
-      case 1804: { // Câmera
-        if (grantResults.length > 0
-          && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-          startActivity(new Intent(this, DecoderActivity.class));
-        } else {
-          // Permissão à câmera negada
-        }
-        return;
+    // Câmera
+    if (requestCode == 1804) {
+      if (grantResults.length > 0
+        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+        startActivity(new Intent(this, DecoderActivity.class));
       }
     }
   }
@@ -252,7 +242,7 @@ public class AgendaDrawerActivity extends AppCompatActivity
   }
 
   @Override
-  public boolean onNavigationItemSelected(MenuItem item) {
+  public boolean onNavigationItemSelected(@NonNull MenuItem item) {
     // Handle navigation view item clicks here.
     int id = item.getItemId();
 

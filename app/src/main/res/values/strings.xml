@@ -21,4 +21,8 @@
   <string name="menu_send">Send</string>
   <string name="um_qr_code">Um QR code</string>
   <string name="msg_qr">Escaneie o código com outro aparelho</string>
+  <string name="compromisso">Compromisso</string>
+  <string name="dd_mm_aa">dd/MM/AA</string>
+  <string name="hh_mm_ate_hh_mm">hh:mm até hh:mm</string>
+  <string name="novo_compromisso">Novo compromisso</string>
 </resources>

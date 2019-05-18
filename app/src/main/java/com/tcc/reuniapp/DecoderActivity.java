@@ -2,13 +2,10 @@ package com.tcc.reuniapp;
 
 import android.content.Intent;
 import android.graphics.PointF;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 
 import com.dlazaro66.qrcodereaderview.QRCodeReaderView;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class DecoderActivity extends AppCompatActivity implements QRCodeReaderView.OnQRCodeReadListener {
   private QRCodeReaderView qrReaderView;

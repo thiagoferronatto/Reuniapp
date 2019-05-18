@@ -1,9 +1,9 @@
 package com.tcc.reuniapp;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -16,7 +16,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
-import java.util.Objects;
 
 public class LoginActivity extends AppCompatActivity {
   GoogleSignInClient mGoogleSignInClient;

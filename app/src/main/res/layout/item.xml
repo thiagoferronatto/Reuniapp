@@ -2,7 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
-  xmlns:app="http://schemas.android.com/apk/res-auto"
   android:layout_marginBottom="5dp">
 
   <android.support.v7.widget.CardView
@@ -23,7 +22,7 @@
         android:layout_marginStart="15dp"
         android:layout_marginTop="5dp"
         android:layout_weight="50"
-        android:text="Compromisso"
+        android:text="@string/compromisso"
         android:textAlignment="viewStart"
         android:textSize="24sp" />
 
@@ -40,7 +39,7 @@
           android:layout_height="wrap_content"
           android:layout_marginTop="5dp"
           android:layout_marginEnd="15dp"
-          android:text="dd/MM/AA"
+          android:text="@string/dd_mm_aa"
           android:textAlignment="viewEnd" />
 
         <TextView
@@ -48,7 +47,7 @@
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:layout_marginEnd="15dp"
-          android:text="hh:mm até hh:mm"
+          android:text="@string/hh_mm_ate_hh_mm"
           android:textAlignment="viewEnd" />
       </LinearLayout>
     </LinearLayout>

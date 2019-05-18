@@ -4,15 +4,15 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.io.InputStream;
 
+@SuppressWarnings("staticFieldLeak")
 public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-  ImageView bmImage;
-  Context context;
+  private ImageView bmImage;
+  private Context context;
 
   DownloadImageTask(ImageView bmImage, Context context) {
     this.bmImage = bmImage;

@@ -1,17 +1,11 @@
 package com.tcc.reuniapp;
 
-import android.annotation.SuppressLint;
-import android.app.TimePickerDialog;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.TimePicker;
-
-import java.util.Calendar;
 
 public class TempoDesejadoActivity extends AppCompatActivity {
   int _hora, _minuto;
