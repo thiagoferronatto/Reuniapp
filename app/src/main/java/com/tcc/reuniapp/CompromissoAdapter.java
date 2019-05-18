@@ -89,13 +89,13 @@ public class CompromissoAdapter extends RecyclerView.Adapter<CompromissoAdapter.
           Log.i("data", compromissos.get(i).getData());
           Log.i("usuario", ((HorariosDisponiveisActivity) context).usuario);
 
-          /*intent.putExtra("data", compromissos.get(i).getData());
+          intent.putExtra("data", compromissos.get(i).getData());
           intent.putExtra("inicio", _inicio);
           intent.putExtra("termino", _termino);
           intent.putExtra("usuario", ((HorariosDisponiveisActivity) context).usuario);
 
           context.startActivity(intent);
-          ((HorariosDisponiveisActivity) context).finish();*/
+          ((HorariosDisponiveisActivity) context).finish();
         } else {
           new AlertDialog.Builder(context)
             .setTitle(compromissos.get(i).getNome())
