@@ -152,7 +152,7 @@ public class AgendaDrawerActivity extends AppCompatActivity
                 data = (String) x.get("data"),
                 horario = x.get("inicio") + " até " + x.get("termino"),
                 participantes = "Com: " + x.get("participantes");
-              Compromisso c = new Compromisso(nome, data, horario);
+              Compromisso c = new Compromisso(nome, data, horario, participantes);
               l.add(c);
             }
             compromissos = l;
