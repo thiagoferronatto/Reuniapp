@@ -27,6 +27,7 @@ import com.google.zxing.WriterException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import androidmads.library.qrgenearator.QRGContents;
 import androidmads.library.qrgenearator.QRGEncoder;
@@ -67,9 +68,10 @@ public class QRActivity extends AppCompatActivity {
           assert document != null;
           if (document.exists()) {
             List<Compromisso> l = new ArrayList<>();
-            for (int i = 0; i < document.getData().size(); ++i) {
+            for (int i = 0; i < Objects.requireNonNull(document.getData()).size(); ++i) {
               @SuppressWarnings("unchecked")
               Map<String, Object> x = (Map<String, Object>) document.getData().get(Integer.toString(i));
+              assert x != null;
               String
                 nome = (String) x.get("nome"),
                 data = (String) x.get("data"),
@@ -78,17 +80,17 @@ public class QRActivity extends AppCompatActivity {
               l.add(c);
             }
 
-            String horarios = "";
+            StringBuilder horarios = new StringBuilder();
             for (Compromisso i : l) {
-              horarios += i.getData() + "#";
-              horarios += i.getHorario();
+              horarios.append(i.getData()).append("#");
+              horarios.append(i.getHorario());
               if (!(l.indexOf(i) == l.size() - 1))
-                horarios += ";";
+                horarios.append(";");
             }
 
-            horarios += ";" + conta.getDisplayName() + ";" + conta.getEmail();
+            horarios.append(";").append(conta.getDisplayName()).append(";").append(conta.getEmail());
 
-            inputValue = horarios;
+            inputValue = horarios.toString();
             if (inputValue.length() > 0) {
               WindowManager manager = (WindowManager) getSystemService(WINDOW_SERVICE);
               Display display = manager.getDefaultDisplay();
@@ -114,6 +116,7 @@ public class QRActivity extends AppCompatActivity {
           }
         }
         carregando.hide();
+        carregando.dismiss();
       }
     });
   }

@@ -202,6 +202,7 @@ public class AgendaDrawerActivity extends AppCompatActivity
         }
 
         carregando.hide();
+        carregando.dismiss();
       }
     });
   }
@@ -243,6 +244,9 @@ public class AgendaDrawerActivity extends AppCompatActivity
     if (item.getItemId() == R.id.menu_agenda_sair) {
       sair();
       return true;
+    } else if (item.getItemId() == R.id.menu_agenda_atualizar) {
+      startActivity(new Intent(this, AgendaDrawerActivity.class));
+      this.finish();
     }
     return super.onOptionsItemSelected(item);
   }
