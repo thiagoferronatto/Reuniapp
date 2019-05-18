@@ -1,9 +1,11 @@
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="24dp"
-    android:height="24dp"
-    android:viewportWidth="24"
-    android:viewportHeight="24">
+  xmlns:tools="http://schemas.android.com/tools"
+  android:width="24dp"
+  android:height="24dp"
+  android:viewportWidth="24"
+  android:viewportHeight="24">
   <path
-      android:pathData="M21,21v3h3v-3h-1v-1h-1v1H21zM23,22v1h-1v-1H23zM0,24h8v-8H0V24zM1,17h6v6H1V17zM21,20v-1h1v1H21zM2,18h4v4H2V18zM10,15v2H9v-2H10zM12,7h1v1h-1V7zM13,6h1v1h-1V6zM14,8V7h1v1H14zM14,6h1V0h-3v1H9v1h3v1h2V6zM13,2V1h1v1H13zM6,6H2V2h4V6zM12,6h-1V4H9V3h3v1h1v1h-1V6zM8,0H0v8h8V0zM7,7H1V1h6V7zM10,7H9V6h2v2h-1V7zM7,10v1H6v-1H7zM22,16h2v3h-1v-1h-2v1h-1v-1h-1v-1h1v-1h1v1h1V16zM18,18h-1v1h-1v-1h-1v-1h1v-1h-2v-1h-1v1h-1v1h-2v1H9v6h5v-1h-1v-2h-1v2h-2v-1h1v-1h-1v-1h3v-1h2v2h-1v1h1v2h1v-2h1v1h1v-1h1v-2h1v-1h-2V18zM17,21h-1v-1h1V21zM23,15v-2h1v2H23zM14,20v1h-1v-1H14zM19,23v-1h1v2h-2v-1H19zM16,0v8h8V0H16zM23,7h-6V1h6V7zM22,6h-4V2h4V6zM23,10h1v2h-1v1h-2V9h1v2h1V10zM19,16v-3h1v3H19zM6,9v1H4v1h1v1H2v-1h1v-1H1v1H0V9H6zM5,13v-1h1v3H5v-1H4v1H3v-1H2v1H0v-1h1v-1H5zM1,12v1H0v-1H1zM20,10h-1V9h1V10zM7,14h1v1H7V14zM22,16h-1v-1h1V16zM17,17v-1h1v1H17zM16,16h1v-3h2v-1h1v-1h-1v-1h-2V9h-1v1h-1V9h-1v1h-1V9h-1v1h-1v1h-1v-1h1V9H7v1h2v1H7v1h1v2h1v-1h2v2h1v-4h1v2h3v1h-2v1h2V16zM17,11h1v1h-1V11zM15,12h-1v-1h1V12z"
-      android:fillColor="#4527A0"/>
+    android:fillColor="#4527A0"
+    android:pathData="M21,21v3h3v-3h-1v-1h-1v1H21zM23,22v1h-1v-1H23zM0,24h8v-8H0V24zM1,17h6v6H1V17zM21,20v-1h1v1H21zM2,18h4v4H2V18zM10,15v2H9v-2H10zM12,7h1v1h-1V7zM13,6h1v1h-1V6zM14,8V7h1v1H14zM14,6h1V0h-3v1H9v1h3v1h2V6zM13,2V1h1v1H13zM6,6H2V2h4V6zM12,6h-1V4H9V3h3v1h1v1h-1V6zM8,0H0v8h8V0zM7,7H1V1h6V7zM10,7H9V6h2v2h-1V7zM7,10v1H6v-1H7zM22,16h2v3h-1v-1h-2v1h-1v-1h-1v-1h1v-1h1v1h1V16zM18,18h-1v1h-1v-1h-1v-1h1v-1h-2v-1h-1v1h-1v1h-2v1H9v6h5v-1h-1v-2h-1v2h-2v-1h1v-1h-1v-1h3v-1h2v2h-1v1h1v2h1v-2h1v1h1v-1h1v-2h1v-1h-2V18zM17,21h-1v-1h1V21zM23,15v-2h1v2H23zM14,20v1h-1v-1H14zM19,23v-1h1v2h-2v-1H19zM16,0v8h8V0H16zM23,7h-6V1h6V7zM22,6h-4V2h4V6zM23,10h1v2h-1v1h-2V9h1v2h1V10zM19,16v-3h1v3H19zM6,9v1H4v1h1v1H2v-1h1v-1H1v1H0V9H6zM5,13v-1h1v3H5v-1H4v1H3v-1H2v1H0v-1h1v-1H5zM1,12v1H0v-1H1zM20,10h-1V9h1V10zM7,14h1v1H7V14zM22,16h-1v-1h1V16zM17,17v-1h1v1H17zM16,16h1v-3h2v-1h1v-1h-1v-1h-2V9h-1v1h-1V9h-1v1h-1V9h-1v1h-1v1h-1v-1h1V9H7v1h2v1H7v1h1v2h1v-1h2v2h1v-4h1v2h3v1h-2v1h2V16zM17,11h1v1h-1V11zM15,12h-1v-1h1V12z"
+    tools:ignore="VectorPath" />
 </vector>

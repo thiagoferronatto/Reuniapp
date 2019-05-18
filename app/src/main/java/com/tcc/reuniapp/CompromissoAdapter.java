@@ -25,18 +25,6 @@ public class CompromissoAdapter extends RecyclerView.Adapter<CompromissoAdapter.
     this.compromissos = compromissos;
   }
 
-  static class CompromissoViewHolder extends RecyclerView.ViewHolder {
-    TextView nome, data, horario;
-    CardView cardView;
-
-    CompromissoViewHolder(View itemView) {
-      super(itemView);
-      nome = itemView.findViewById(R.id.nome_item);
-      data = itemView.findViewById(R.id.data_item);
-      horario = itemView.findViewById(R.id.horario_item);
-      cardView = itemView.findViewById(R.id.cardview);
-    }
-  }
   @NonNull
   @Override
   public CompromissoViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -67,7 +55,7 @@ public class CompromissoAdapter extends RecyclerView.Adapter<CompromissoAdapter.
           if (compromissos.get(i).getNome().startsWith("Antes")) {
             termino =
               Integer.parseInt(compromissos.get(i).getNome().split(" ")[2].split(":")[0]) * 60 +
-              Integer.parseInt(compromissos.get(i).getNome().split(" ")[2].split(":")[1]);
+                Integer.parseInt(compromissos.get(i).getNome().split(" ")[2].split(":")[1]);
             inicio = termino - duracao;
           } else if (compromissos.get(i).getNome().endsWith("diante")) {
             inicio =
@@ -111,5 +99,18 @@ public class CompromissoAdapter extends RecyclerView.Adapter<CompromissoAdapter.
   @Override
   public int getItemCount() {
     return compromissos.size();
+  }
+
+  static class CompromissoViewHolder extends RecyclerView.ViewHolder {
+    TextView nome, data, horario;
+    CardView cardView;
+
+    CompromissoViewHolder(View itemView) {
+      super(itemView);
+      nome = itemView.findViewById(R.id.nome_item);
+      data = itemView.findViewById(R.id.data_item);
+      horario = itemView.findViewById(R.id.horario_item);
+      cardView = itemView.findViewById(R.id.cardview);
+    }
   }
 }

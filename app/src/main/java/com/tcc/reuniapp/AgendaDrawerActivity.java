@@ -108,7 +108,7 @@ public class AgendaDrawerActivity extends AppCompatActivity
         if (ContextCompat.checkSelfPermission(
           AgendaDrawerActivity.this, Manifest.permission.CAMERA)
           == PackageManager.PERMISSION_DENIED) {
-          ActivityCompat.requestPermissions(AgendaDrawerActivity.this, new String[] {Manifest.permission.CAMERA}, 1804);
+          ActivityCompat.requestPermissions(AgendaDrawerActivity.this, new String[]{Manifest.permission.CAMERA}, 1804);
         } else {
           startActivity(new Intent(AgendaDrawerActivity.this, DecoderActivity.class));
         }
@@ -259,7 +259,7 @@ public class AgendaDrawerActivity extends AppCompatActivity
           info.activityInfo.name.toLowerCase().contains("gmail")) best = info;
       if (best != null)
         intent.setClassName(best.activityInfo.packageName, best.activityInfo.name);
-      intent.putExtra(Intent.EXTRA_EMAIL, new String[] {"problemas@reuniapp.com"})
+      intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"problemas@reuniapp.com"})
         .putExtra(Intent.EXTRA_SUBJECT, "Problema com o Reuniapp")
         .putExtra(Intent.EXTRA_TEXT, "\n\n--\nAtenciosamente, " + conta.getGivenName() + ".");
       startActivity(intent);

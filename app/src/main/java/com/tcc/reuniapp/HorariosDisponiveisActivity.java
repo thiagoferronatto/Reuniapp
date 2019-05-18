@@ -240,8 +240,8 @@ public class HorariosDisponiveisActivity extends AppCompatActivity {
                 ) * 60;
 
                 if ((inicioI >= inicioJ && inicioI < terminoJ) ||
-                    (terminoI > inicioJ && terminoI <= terminoJ) ||
-                    (inicioI <= inicioJ && terminoI >= terminoJ)) {
+                  (terminoI > inicioJ && terminoI <= terminoJ) ||
+                  (inicioI <= inicioJ && terminoI >= terminoJ)) {
                   sugestoes.get(sugestoes.indexOf(j)).setCor("vermelho");
                 }
               }

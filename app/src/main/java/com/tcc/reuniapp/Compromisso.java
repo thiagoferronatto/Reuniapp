@@ -8,6 +8,8 @@ class Compromisso {
   private String horario;
   private String inicio;
   private String termino;
+  private String participantes;
+  private String cor;
 
   Compromisso(String nome, String data, String horario) {
     setNome(nome);
@@ -16,7 +18,7 @@ class Compromisso {
     setCor("nada");
   }
 
-  public Compromisso(String nome, String data, String horario, String participantes) {
+  Compromisso(String nome, String data, String horario, String participantes) {
     setParticipantes(participantes);
     setNome(nome);
     setData(data);
@@ -41,8 +43,6 @@ class Compromisso {
     this.participantes = participantes;
   }
 
-  private String participantes;
-
   String getCor() {
     return cor;
   }
@@ -51,13 +51,11 @@ class Compromisso {
     this.cor = cor;
   }
 
-  private String cor;
-
   String getTermino() {
     return termino;
   }
 
-  void setTermino(String termino) {
+  private void setTermino(String termino) {
     this.termino = termino;
   }
 
@@ -65,7 +63,7 @@ class Compromisso {
     return inicio;
   }
 
-  void setInicio(String inicio) {
+  private void setInicio(String inicio) {
     this.inicio = inicio;
   }
 
@@ -73,7 +71,7 @@ class Compromisso {
     return nome;
   }
 
-  void setNome(String nome) {
+  private void setNome(String nome) {
     this.nome = nome;
   }
 
@@ -81,7 +79,7 @@ class Compromisso {
     return data;
   }
 
-  void setData(String data) {
+  private void setData(String data) {
     this.data = data;
   }
 
@@ -89,7 +87,7 @@ class Compromisso {
     return horario;
   }
 
-  void setHorario(String horario) {
+  private void setHorario(String horario) {
     this.horario = horario;
   }
 

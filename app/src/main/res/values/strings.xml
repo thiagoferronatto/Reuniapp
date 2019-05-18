@@ -25,4 +25,7 @@
   <string name="dd_mm_aa">dd/MM/AA</string>
   <string name="hh_mm_ate_hh_mm">hh:mm até hh:mm</string>
   <string name="novo_compromisso">Novo compromisso</string>
+  <string name="sair">Sair</string>
+  <string name="atualizar">Atualizar</string>
+  <string name="logo_do_reuniapp">Logo do Reuniapp</string>
 </resources>
