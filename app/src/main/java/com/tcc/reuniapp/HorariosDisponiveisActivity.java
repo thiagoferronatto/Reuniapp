@@ -22,6 +22,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class HorariosDisponiveisActivity extends AppCompatActivity {
   RecyclerView rv;
@@ -40,10 +41,12 @@ public class HorariosDisponiveisActivity extends AppCompatActivity {
     List<Compromisso> meusCompromissos = new ArrayList<>();
     sugestoes = new ArrayList<>();
 
+    assert conta != null;
     String e = conta.getEmail();
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
+    assert e != null;
     DocumentReference df = db.collection("compromissos").document(e.substring(0, e.indexOf("@")));
 
     String qr = getIntent().getStringExtra("texto");
@@ -157,8 +160,9 @@ public class HorariosDisponiveisActivity extends AppCompatActivity {
           assert document != null;
           if (document.exists()) {
             List<Compromisso> l = new ArrayList<>();
-            for (int i = 0; i < document.getData().size(); ++i) {
+            for (int i = 0; i < Objects.requireNonNull(document.getData()).size(); ++i) {
               Map<String, Object> x = (Map<String, Object>) document.getData().get(Integer.toString(i));
+              assert x != null;
               String
                 nome = (String) x.get("nome"),
                 data = (String) x.get("data"),
@@ -242,7 +246,6 @@ public class HorariosDisponiveisActivity extends AppCompatActivity {
 
               }
             }
-
 
             rv = findViewById(R.id.horarios_disponiveis);
             LinearLayoutManager lm = new LinearLayoutManager(HorariosDisponiveisActivity.this);
