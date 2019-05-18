@@ -64,38 +64,38 @@ public class CompromissoAdapter extends RecyclerView.Adapter<CompromissoAdapter.
 
           int duracao = Integer.parseInt(_duracao.split(":")[0]) * 60 + Integer.parseInt(_duracao.split(":")[1]);
 
+          int inicio, termino;
           if (compromissos.get(i).getNome().startsWith("Antes")) {
-            int termino =
+            termino =
               Integer.parseInt(compromissos.get(i).getNome().split(" ")[2].split(":")[0]) * 60 +
               Integer.parseInt(compromissos.get(i).getNome().split(" ")[2].split(":")[1]);
-            int inicio = termino - duracao;
-            _inicio = (inicio / 60) + ":" + (inicio % 60);
-            _termino = (termino / 60) + ":" + (termino % 60);
+            inicio = termino - duracao;
           } else if (compromissos.get(i).getNome().endsWith("diante")) {
-            int inicio =
+            inicio =
               Integer.parseInt(compromissos.get(i).getNome().split(" ")[0].split(":")[0]) * 60 +
                 Integer.parseInt(compromissos.get(i).getNome().split(" ")[0].split(":")[1]);
-            int termino = inicio + duracao;
-            _inicio = (inicio / 60) + ":" + (inicio % 60);
-            _termino = (termino / 60) + ":" + (termino % 60);
+            termino = inicio + duracao;
           } else {
-            int inicio =
+            inicio =
               Integer.parseInt(compromissos.get(i).getNome().split(" até ")[0].split(":")[0]) * 60 +
                 Integer.parseInt(compromissos.get(i).getNome().split(" até ")[0].split(":")[1]);
-            int termino = inicio + duracao;
-            _inicio = (inicio / 60) + ":" + (inicio % 60);
-            _termino = (termino / 60) + ":" + (termino % 60);
+            termino = inicio + duracao;
           }
+          _inicio = (inicio / 60) + ":" + (inicio % 60);
+          _termino = (termino / 60) + ":" + (termino % 60);
 
           Log.i("inicio", _inicio);
           Log.i("termino", _termino);
           Log.i("data", compromissos.get(i).getData());
+          Log.i("usuario", ((HorariosDisponiveisActivity) context).usuario);
 
-          //intent.putExtra("data", compromissos.get(i).getData());
-          // intent.putExtra("inicio", _inicio);
-          //intent.putExtra("termino", _termino);
+          /*intent.putExtra("data", compromissos.get(i).getData());
+          intent.putExtra("inicio", _inicio);
+          intent.putExtra("termino", _termino);
+          intent.putExtra("usuario", ((HorariosDisponiveisActivity) context).usuario);
 
-          // context.startActivity(intent);
+          context.startActivity(intent);
+          ((HorariosDisponiveisActivity) context).finish();*/
         } else {
           new AlertDialog.Builder(context)
             .setTitle(compromissos.get(i).getNome())

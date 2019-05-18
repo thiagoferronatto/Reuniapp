@@ -27,7 +27,7 @@ import java.util.Objects;
 public class HorariosDisponiveisActivity extends AppCompatActivity {
   RecyclerView rv;
   List<Compromisso> sugestoes;
-  String _terminoJ, _inicioJ;
+  String _terminoJ, _inicioJ, usuario;
 
   @SuppressLint("SetTextI18n")
   @Override
@@ -64,6 +64,8 @@ public class HorariosDisponiveisActivity extends AppCompatActivity {
       "Agenda de " + qr.split(";")[qr.split(";").length - 2] + System.lineSeparator() +
         qr.split(";")[qr.split(";").length - 1]
     );
+    String email = qr.split(";")[qr.split(";").length - 1];
+    usuario = email.substring(0, email.indexOf("@"));
 
     Collections.sort(compromissos, new Comparator<Compromisso>() {
       @Override
