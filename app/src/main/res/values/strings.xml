@@ -19,4 +19,6 @@
   <string name="menu_tools">Tools</string>
   <string name="menu_share">Share</string>
   <string name="menu_send">Send</string>
+  <string name="um_qr_code">Um QR code</string>
+  <string name="msg_qr">Escaneie o código com outro aparelho</string>
 </resources>

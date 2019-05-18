@@ -38,7 +38,6 @@ public class HorariosDisponiveisActivity extends AppCompatActivity {
     GoogleSignInAccount conta = GoogleSignIn.getLastSignedInAccount(this);
 
     List<Compromisso> compromissos = new ArrayList<>();
-    List<Compromisso> meusCompromissos = new ArrayList<>();
     sugestoes = new ArrayList<>();
 
     assert conta != null;
@@ -101,14 +100,12 @@ public class HorariosDisponiveisActivity extends AppCompatActivity {
         return t1.compareToIgnoreCase(t2);
       }
     });
-
     Compromisso compromisso = new Compromisso(
       "Antes das " + compromissos.get(0).getInicio(),
       compromissos.get(0).getData(),
       "Tempo livre"
     );
     sugestoes.add(compromisso);
-
     for (int i = 0; i < compromissos.size() - 1; ++i) {
       if (compromissos.get(i).getData().equals(compromissos.get(i + 1).getData())) {
         long termSecs =
@@ -128,6 +125,7 @@ public class HorariosDisponiveisActivity extends AppCompatActivity {
             "Tempo livre"
           );
           sugestoes.add(compromisso);
+          Log.i("entrou", "" + sugestoes.size());
         }
       } else {
         Compromisso c1 = new Compromisso(
@@ -246,17 +244,15 @@ public class HorariosDisponiveisActivity extends AppCompatActivity {
                     (inicioI <= inicioJ && terminoI >= terminoJ)) {
                   sugestoes.get(sugestoes.indexOf(j)).setCor("vermelho");
                 }
-
               }
             }
-
-            rv = findViewById(R.id.horarios_disponiveis);
-            LinearLayoutManager lm = new LinearLayoutManager(HorariosDisponiveisActivity.this);
-            lm.setOrientation(LinearLayoutManager.VERTICAL);
-            rv.setLayoutManager(lm);
-            CompromissoAdapter adapter = new CompromissoAdapter(sugestoes, HorariosDisponiveisActivity.this);
-            rv.setAdapter(adapter);
           }
+          rv = findViewById(R.id.horarios_disponiveis);
+          LinearLayoutManager lm = new LinearLayoutManager(HorariosDisponiveisActivity.this);
+          lm.setOrientation(LinearLayoutManager.VERTICAL);
+          rv.setLayoutManager(lm);
+          CompromissoAdapter adapter = new CompromissoAdapter(sugestoes, HorariosDisponiveisActivity.this);
+          rv.setAdapter(adapter);
         }
       }
     });

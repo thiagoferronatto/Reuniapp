@@ -1,6 +1,7 @@
 package com.tcc.reuniapp;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
@@ -43,7 +44,7 @@ public class CompromissoActivity extends AppCompatActivity {
 
     alternativo = getIntent().hasExtra("usuario");
 
-    email = GoogleSignIn.getLastSignedInAccount(this).getEmail();
+    email = Objects.requireNonNull(GoogleSignIn.getLastSignedInAccount(this)).getEmail();
 
     db = FirebaseFirestore.getInstance();
 
@@ -64,7 +65,7 @@ public class CompromissoActivity extends AppCompatActivity {
 
     if (alternativo) {
       DocumentReference df2 = db.collection("compromissos").document(getIntent().getStringExtra("usuario"));
-      df.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+      df2.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
         @Override
         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
           if (task.isSuccessful()) {
@@ -84,9 +85,7 @@ public class CompromissoActivity extends AppCompatActivity {
     salvar = findViewById(R.id.btnSalvarCompromisso);
 
     tvParticipantes = findViewById(R.id.textview_participantes);
-    tvParticipantes.setVisibility(View.GONE);
     _participantes = findViewById(R.id.participantes);
-    _participantes.setVisibility(View.GONE);
     _data = findViewById(R.id.data);
     _data.setEnabled(false);
     _data.setVisibility(View.GONE);
@@ -192,79 +191,87 @@ public class CompromissoActivity extends AppCompatActivity {
           inicio = _inicio.getEditableText().toString(),
           termino = _termino.getEditableText().toString(),
           nome = _nome.getEditableText().toString();
-        db = FirebaseFirestore.getInstance();
-        GoogleSignInAccount conta = GoogleSignIn.getLastSignedInAccount(CompromissoActivity.this);
-        assert conta != null;
-        email = conta.getEmail();
+        if (data.equals("") || inicio.equals("") || termino.equals("") || nome.equals("")) {
+          new AlertDialog.Builder(CompromissoActivity.this)
+            .setTitle("Campos vazios")
+            .setMessage("Preencha todos os campos obrigatórios!\n(destacados em negrito)")
+            .setPositiveButton("OK", null)
+            .show();
+        } else {
+          db = FirebaseFirestore.getInstance();
+          GoogleSignInAccount conta = GoogleSignIn.getLastSignedInAccount(CompromissoActivity.this);
+          assert conta != null;
+          email = conta.getEmail();
 
-        final Map<String, Object> compromisso = new HashMap<>();
-        final Map<String, String> dados = new HashMap<>();
-        dados.put("participantes", participantes);
-        dados.put("data", data);
-        dados.put("inicio", inicio);
-        dados.put("termino", termino);
-        dados.put("nome", nome);
-        compromisso.put(Integer.toString(numeroDoCompromisso), dados);
+          final Map<String, Object> compromisso = new HashMap<>();
+          final Map<String, String> dados = new HashMap<>();
+          dados.put("participantes", participantes);
+          dados.put("data", data);
+          dados.put("inicio", inicio);
+          dados.put("termino", termino);
+          dados.put("nome", nome);
+          compromisso.put(Integer.toString(numeroDoCompromisso), dados);
 
-        final Map<String, Object> compromisso2 = new HashMap<>();
-        final Map<String, String> dados2 = new HashMap<>();
-        dados2.put("participantes", email.substring(0, email.indexOf("@")));
-        dados.put("data", data);
-        dados.put("inicio", inicio);
-        dados.put("termino", termino);
-        dados.put("nome", nome);
-        compromisso2.put(Integer.toString(numeroDoCompromisso2), dados2);
+          final Map<String, Object> compromisso2 = new HashMap<>();
+          final Map<String, String> dados2 = new HashMap<>();
+          dados2.put("participantes", email.substring(0, email.indexOf("@")));
+          dados2.put("data", data);
+          dados2.put("inicio", inicio);
+          dados2.put("termino", termino);
+          dados2.put("nome", nome);
+          compromisso2.put(Integer.toString(numeroDoCompromisso2), dados2);
 
-        if (numeroDoCompromisso2 != 0 && alternativo) {
-          DocumentReference df = db.collection("compromissos")
-            .document(CompromissoActivity.this.getIntent().getStringExtra("usuario"));
-          df.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-              if (task.isSuccessful()) {
-                DocumentSnapshot document = task.getResult();
-                assert document != null;
-                if (document.exists()) {
-                  numeroDoCompromisso2 = Objects.requireNonNull(document.getData()).size();
+          if (numeroDoCompromisso2 != 0 && alternativo) {
+            DocumentReference df = db.collection("compromissos")
+              .document(CompromissoActivity.this.getIntent().getStringExtra("usuario"));
+            df.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+              @Override
+              public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                  DocumentSnapshot document = task.getResult();
+                  assert document != null;
+                  if (document.exists()) {
+                    numeroDoCompromisso2 = Objects.requireNonNull(document.getData()).size();
+                  }
                 }
               }
-            }
-          });
-        }
+            });
+          }
 
-        if (numeroDoCompromisso != 0) {
-          assert email != null;
-          DocumentReference df = db.collection("compromissos").document(email.substring(0, email.indexOf("@")));
-          df.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-              if (task.isSuccessful()) {
-                DocumentSnapshot document = task.getResult();
-                assert document != null;
-                if (document.exists()) {
-                  numeroDoCompromisso = Objects.requireNonNull(document.getData()).size();
+          if (numeroDoCompromisso != 0) {
+            assert email != null;
+            DocumentReference df = db.collection("compromissos").document(email.substring(0, email.indexOf("@")));
+            df.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+              @Override
+              public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                  DocumentSnapshot document = task.getResult();
+                  assert document != null;
+                  if (document.exists()) {
+                    numeroDoCompromisso = Objects.requireNonNull(document.getData()).size();
+                  }
                 }
               }
-            }
-          });
+            });
+          }
+
+          if (numeroDoCompromisso2 != 0 && alternativo)
+            db.collection("compromissos")
+              .document(CompromissoActivity.this.getIntent().getStringExtra("usuario"))
+              .update(compromisso2);
+          else if (numeroDoCompromisso2 == 0 && alternativo)
+            db.collection("compromissos")
+              .document(CompromissoActivity.this.getIntent().getStringExtra("usuario"))
+              .set(compromisso2);
+
+          if (numeroDoCompromisso != 0)
+            db.collection("compromissos").document(email.substring(0, email.indexOf("@"))).update(compromisso);
+          else
+            db.collection("compromissos").document(email.substring(0, email.indexOf("@"))).set(compromisso);
+
+          startActivity(new Intent(CompromissoActivity.this, AgendaDrawerActivity.class));
+          CompromissoActivity.this.finish();
         }
-
-        if (numeroDoCompromisso2 != 0 && alternativo)
-          db.collection("compromissos")
-            .document(CompromissoActivity.this.getIntent().getStringExtra("usuario"))
-            .update(compromisso);
-        else
-          db.collection("compromissos")
-            .document(CompromissoActivity.this.getIntent().getStringExtra("usuario"))
-            .set(compromisso);
-
-        if (numeroDoCompromisso != 0)
-          db.collection("compromissos").document(email.substring(0, email.indexOf("@"))).update(compromisso);
-        else
-          db.collection("compromissos").document(email.substring(0, email.indexOf("@"))).set(compromisso);
-
-        startActivity(new Intent(CompromissoActivity.this, AgendaDrawerActivity.class));
-        CompromissoActivity.this.finish();
       }
     });
   }

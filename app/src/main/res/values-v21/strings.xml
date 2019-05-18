@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="um_qr_code">Um QR code</string>
+  <string name="msg_qr">Escaneie o código com outro aparelho</string>
+</resources>

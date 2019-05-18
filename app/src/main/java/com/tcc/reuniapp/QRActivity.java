@@ -14,6 +14,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -23,6 +24,8 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.zxing.WriterException;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -112,7 +115,9 @@ public class QRActivity extends AppCompatActivity {
                 Log.v(TAG, e.toString());
               }
             }
-
+          } else {
+            TextView textoQR = findViewById(R.id.texto_qr);
+            textoQR.setText("Crie compromissos para ter um QR!\n\n(O código acima não é válido)");
           }
         }
         carregando.hide();
