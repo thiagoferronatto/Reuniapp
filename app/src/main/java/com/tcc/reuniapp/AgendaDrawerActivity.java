@@ -246,9 +246,7 @@ public class AgendaDrawerActivity extends AppCompatActivity
     // Handle navigation view item clicks here.
     int id = item.getItemId();
 
-    if (id == R.id.nav_info) {
-      startActivity(new Intent(this, InfoActivity.class));
-    } else if (id == R.id.nav_problema) {
+    if (id == R.id.nav_problema) {
       final Intent intent = new Intent(android.content.Intent.ACTION_SEND);
       intent.setType("text/plain");
       final PackageManager pm = getPackageManager();
@@ -259,7 +257,7 @@ public class AgendaDrawerActivity extends AppCompatActivity
           info.activityInfo.name.toLowerCase().contains("gmail")) best = info;
       if (best != null)
         intent.setClassName(best.activityInfo.packageName, best.activityInfo.name);
-      intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"problemas@reuniapp.com"})
+      intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"reuniapp@outlook.com.br"})
         .putExtra(Intent.EXTRA_SUBJECT, "Problema com o Reuniapp")
         .putExtra(Intent.EXTRA_TEXT, "\n\n--\nAtenciosamente, " + conta.getGivenName() + ".");
       startActivity(intent);

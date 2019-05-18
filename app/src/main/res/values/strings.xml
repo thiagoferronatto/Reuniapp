@@ -28,4 +28,7 @@
   <string name="sair">Sair</string>
   <string name="atualizar">Atualizar</string>
   <string name="logo_do_reuniapp">Logo do Reuniapp</string>
+  <string name="informar_um_problema">Informar um problema</string>
+  <string name="outros">Outros</string>
+  <string name="meu_qr">Meu QR</string>
 </resources>

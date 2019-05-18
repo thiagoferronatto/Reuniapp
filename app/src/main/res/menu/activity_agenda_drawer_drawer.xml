@@ -7,19 +7,15 @@
     <item
       android:id="@+id/nav_meu_qr"
       android:icon="@drawable/ic_meu_qr"
-      android:title="Meu QR" />
+      android:title="@string/meu_qr" />
   </group>
 
-  <item android:title="Outros">
+  <item android:title="@string/outros">
     <menu>
       <item
-        android:id="@+id/nav_info"
-        android:icon="@drawable/ic_info"
-        android:title="Sobre nós" />
-      <item
         android:id="@+id/nav_problema"
-        android:icon="@drawable/ic_three_dots"
-        android:title="Informar um problema" />
+        android:icon="@drawable/ic_informar_problema"
+        android:title="@string/informar_um_problema" />
     </menu>
   </item>
 
