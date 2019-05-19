@@ -14,7 +14,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 public class CompromissoAdapter extends RecyclerView.Adapter<CompromissoAdapter.CompromissoViewHolder> {
   private List<Compromisso> compromissos;
@@ -33,13 +43,20 @@ public class CompromissoAdapter extends RecyclerView.Adapter<CompromissoAdapter.
   }
 
   @Override
-  public void onBindViewHolder(@NonNull CompromissoViewHolder viewHolder, @SuppressLint("RecyclerView") final int i) {
+  public void onBindViewHolder(@NonNull final CompromissoViewHolder viewHolder, @SuppressLint("RecyclerView") final int i) {
     viewHolder.nome.setText(compromissos.get(i).getNome());
     viewHolder.data.setText(compromissos.get(i).getData());
     viewHolder.horario.setText(compromissos.get(i).getHorario());
     if (compromissos.get(i).getCor().equals("vermelho")) {
       viewHolder.cardView.setCardBackgroundColor(Color.rgb(255, 100, 100));
     }
+    viewHolder.cardView.setOnLongClickListener(new View.OnLongClickListener() {
+      @Override
+      public boolean onLongClick(View v) {
+        // deletar o compromisso
+        return false;
+      }
+    });
     viewHolder.cardView.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
