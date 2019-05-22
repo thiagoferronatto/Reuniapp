@@ -31,7 +31,10 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -39,6 +42,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+
+import javax.annotation.Nullable;
 
 public class AgendaDrawerActivity extends AppCompatActivity
   implements NavigationView.OnNavigationItemSelectedListener {
@@ -120,14 +125,17 @@ public class AgendaDrawerActivity extends AppCompatActivity
   protected void onStart() {
     super.onStart();
 
-    String e = conta.getEmail();
+    final String e = conta.getEmail();
 
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     assert e != null;
     DocumentReference df = db.collection("compromissos").document(e.substring(0, e.indexOf("@")));
 
-    final AlertDialog carregando = new AlertDialog.Builder(this).setTitle("Aguarde").setMessage("Carregando compromissos").show();
+    final AlertDialog carregando = new AlertDialog.Builder(this)
+      .setTitle("Aguarde")
+      .setMessage("Carregando compromissos")
+      .show();
 
     df.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
       @SuppressWarnings("unchecked")
@@ -197,6 +205,91 @@ public class AgendaDrawerActivity extends AppCompatActivity
 
         carregando.hide();
         carregando.dismiss();
+      }
+    });
+
+    db.collection("compromissos").addSnapshotListener(new EventListener<QuerySnapshot>() {
+      @Override
+      public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException ex) {
+        if (queryDocumentSnapshots != null) {
+          DocumentReference df = db.collection("compromissos").document(e.substring(0, e.indexOf("@")));
+
+          final AlertDialog carregando = new AlertDialog.Builder(AgendaDrawerActivity.this)
+            .setTitle("Aguarde")
+            .setMessage("Carregando compromissos")
+            .show();
+
+          df.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @SuppressWarnings("unchecked")
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+              if (task.isSuccessful()) {
+                DocumentSnapshot document = task.getResult();
+                assert document != null;
+                if (document.exists()) {
+                  List<Compromisso> l = new ArrayList<>();
+                  for (int i = 0; i < Objects.requireNonNull(document.getData()).size(); ++i) {
+                    Map<String, Object> x = (Map<String, Object>) document.getData().get(Integer.toString(i));
+                    assert x != null;
+                    String
+                      nome = (String) x.get("nome"),
+                      data = (String) x.get("data"),
+                      horario = x.get("inicio") + " até " + x.get("termino"),
+                      participantes = "Com: " + x.get("participantes");
+                    Compromisso c = new Compromisso(nome, data, horario, participantes);
+                    l.add(c);
+                  }
+                  compromissos = l;
+
+                  Collections.sort(l, new Comparator<Compromisso>() {
+                    @Override
+                    public int compare(Compromisso o1, Compromisso o2) {
+                      long _t1 = Long.parseLong(
+                        o1.getData().split("/")[2]
+                      ) * 31536000 + Long.parseLong(
+                        o1.getData().split("/")[1]
+                      ) * 2592000 + Long.parseLong(
+                        o1.getData().split("/")[0]
+                      ) * 86400 + Long.parseLong(
+                        o1.getHorario().split(" até ")[0].split(":")[0]
+                      ) * 3600 + Long.parseLong(
+                        o1.getHorario().split(" até ")[0].split(":")[1]
+                      ) * 60;
+
+                      String t1 = Long.toString(_t1);
+
+                      long _t2 = Long.parseLong(
+                        o2.getData().split("/")[2]
+                      ) * 31536000 + Long.parseLong(
+                        o2.getData().split("/")[1]
+                      ) * 2592000 + Long.parseLong(
+                        o2.getData().split("/")[0]
+                      ) * 86400 + Long.parseLong(
+                        o2.getHorario().split(" até ")[0].split(":")[0]
+                      ) * 3600 + Long.parseLong(
+                        o2.getHorario().split(" até ")[0].split(":")[1]
+                      ) * 60;
+
+                      String t2 = Long.toString(_t2);
+
+                      return t1.compareToIgnoreCase(t2);
+                    }
+                  });
+
+                  rv = findViewById(R.id.lista_usuarios);
+                  LinearLayoutManager lm = new LinearLayoutManager(AgendaDrawerActivity.this);
+                  lm.setOrientation(LinearLayoutManager.VERTICAL);
+                  rv.setLayoutManager(lm);
+                  CompromissoAdapter adapter = new CompromissoAdapter(compromissos, AgendaDrawerActivity.this);
+                  rv.setAdapter(adapter);
+                }
+              }
+
+              carregando.hide();
+              carregando.dismiss();
+            }
+          });
+        }
       }
     });
   }
