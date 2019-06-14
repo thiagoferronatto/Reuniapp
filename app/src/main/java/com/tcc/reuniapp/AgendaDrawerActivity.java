@@ -4,6 +4,8 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -28,6 +30,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -102,7 +105,14 @@ public class AgendaDrawerActivity extends AppCompatActivity
     email.setText(conta.getEmail());
 
     ImageView foto = headerView.findViewById(R.id.imagem_conta);
-    if (!(conta.getPhotoUrl() == null)) {
+
+    ConnectivityManager cm =
+      (ConnectivityManager) this.getSystemService(CONNECTIVITY_SERVICE);
+    NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+    boolean isConnected = activeNetwork != null &&
+      activeNetwork.isConnectedOrConnecting();
+
+    if (isConnected && conta.getPhotoUrl() != null) {
       new DownloadImageTask(foto, this).execute(conta.getPhotoUrl().toString());
     }
 
@@ -208,85 +218,100 @@ public class AgendaDrawerActivity extends AppCompatActivity
       }
     });
 
+    String email = conta.getEmail();
+
+    final DocumentReference docRef =
+      db.collection("compromissos").document(email.substring(0, email.indexOf("@")));
+
+    docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+      @Override
+      public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+        final AlertDialog carregando = new AlertDialog.Builder(AgendaDrawerActivity.this)
+          .setTitle("Aguarde")
+          .setMessage("Carregando compromissos")
+          .show();
+
+        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+          @Override
+          public void onSuccess(DocumentSnapshot document) {
+            assert document != null;
+            if (document.exists()) {
+              List<Compromisso> l = new ArrayList<>();
+              for (int i = 0; i < Objects.requireNonNull(document.getData()).size(); ++i) {
+                Map<String, Object> x = (Map<String, Object>) document.getData().get(Integer.toString(i));
+                assert x != null;
+                String
+                  nome = (String) x.get("nome"),
+                  data = (String) x.get("data"),
+                  horario = x.get("inicio") + " até " + x.get("termino"),
+                  participantes = "Com: " + x.get("participantes");
+                Compromisso c = new Compromisso(nome, data, horario, participantes);
+                l.add(c);
+              }
+              compromissos = l;
+
+              Collections.sort(l, new Comparator<Compromisso>() {
+                @Override
+                public int compare(Compromisso o1, Compromisso o2) {
+                  long _t1 = Long.parseLong(
+                    o1.getData().split("/")[2]
+                  ) * 31536000 + Long.parseLong(
+                    o1.getData().split("/")[1]
+                  ) * 2592000 + Long.parseLong(
+                    o1.getData().split("/")[0]
+                  ) * 86400 + Long.parseLong(
+                    o1.getHorario().split(" até ")[0].split(":")[0]
+                  ) * 3600 + Long.parseLong(
+                    o1.getHorario().split(" até ")[0].split(":")[1]
+                  ) * 60;
+
+                  String t1 = Long.toString(_t1);
+
+                  long _t2 = Long.parseLong(
+                    o2.getData().split("/")[2]
+                  ) * 31536000 + Long.parseLong(
+                    o2.getData().split("/")[1]
+                  ) * 2592000 + Long.parseLong(
+                    o2.getData().split("/")[0]
+                  ) * 86400 + Long.parseLong(
+                    o2.getHorario().split(" até ")[0].split(":")[0]
+                  ) * 3600 + Long.parseLong(
+                    o2.getHorario().split(" até ")[0].split(":")[1]
+                  ) * 60;
+
+                  String t2 = Long.toString(_t2);
+
+                  return t1.compareToIgnoreCase(t2);
+                }
+              });
+
+              rv = findViewById(R.id.lista_usuarios);
+              LinearLayoutManager lm = new LinearLayoutManager(AgendaDrawerActivity.this);
+              lm.setOrientation(LinearLayoutManager.VERTICAL);
+              rv.setLayoutManager(lm);
+              CompromissoAdapter adapter = new CompromissoAdapter(compromissos, AgendaDrawerActivity.this);
+              rv.setAdapter(adapter);
+
+              carregando.hide();
+              carregando.dismiss();
+            }
+          }
+        });
+      }
+    });
+
     db.collection("compromissos").addSnapshotListener(new EventListener<QuerySnapshot>() {
       @Override
       public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException ex) {
         if (queryDocumentSnapshots != null) {
           DocumentReference df = db.collection("compromissos").document(e.substring(0, e.indexOf("@")));
 
-          final AlertDialog carregando = new AlertDialog.Builder(AgendaDrawerActivity.this)
-            .setTitle("Aguarde")
-            .setMessage("Carregando compromissos")
-            .show();
 
           df.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @SuppressWarnings("unchecked")
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-              if (task.isSuccessful()) {
-                DocumentSnapshot document = task.getResult();
-                assert document != null;
-                if (document.exists()) {
-                  List<Compromisso> l = new ArrayList<>();
-                  for (int i = 0; i < Objects.requireNonNull(document.getData()).size(); ++i) {
-                    Map<String, Object> x = (Map<String, Object>) document.getData().get(Integer.toString(i));
-                    assert x != null;
-                    String
-                      nome = (String) x.get("nome"),
-                      data = (String) x.get("data"),
-                      horario = x.get("inicio") + " até " + x.get("termino"),
-                      participantes = "Com: " + x.get("participantes");
-                    Compromisso c = new Compromisso(nome, data, horario, participantes);
-                    l.add(c);
-                  }
-                  compromissos = l;
 
-                  Collections.sort(l, new Comparator<Compromisso>() {
-                    @Override
-                    public int compare(Compromisso o1, Compromisso o2) {
-                      long _t1 = Long.parseLong(
-                        o1.getData().split("/")[2]
-                      ) * 31536000 + Long.parseLong(
-                        o1.getData().split("/")[1]
-                      ) * 2592000 + Long.parseLong(
-                        o1.getData().split("/")[0]
-                      ) * 86400 + Long.parseLong(
-                        o1.getHorario().split(" até ")[0].split(":")[0]
-                      ) * 3600 + Long.parseLong(
-                        o1.getHorario().split(" até ")[0].split(":")[1]
-                      ) * 60;
-
-                      String t1 = Long.toString(_t1);
-
-                      long _t2 = Long.parseLong(
-                        o2.getData().split("/")[2]
-                      ) * 31536000 + Long.parseLong(
-                        o2.getData().split("/")[1]
-                      ) * 2592000 + Long.parseLong(
-                        o2.getData().split("/")[0]
-                      ) * 86400 + Long.parseLong(
-                        o2.getHorario().split(" até ")[0].split(":")[0]
-                      ) * 3600 + Long.parseLong(
-                        o2.getHorario().split(" até ")[0].split(":")[1]
-                      ) * 60;
-
-                      String t2 = Long.toString(_t2);
-
-                      return t1.compareToIgnoreCase(t2);
-                    }
-                  });
-
-                  rv = findViewById(R.id.lista_usuarios);
-                  LinearLayoutManager lm = new LinearLayoutManager(AgendaDrawerActivity.this);
-                  lm.setOrientation(LinearLayoutManager.VERTICAL);
-                  rv.setLayoutManager(lm);
-                  CompromissoAdapter adapter = new CompromissoAdapter(compromissos, AgendaDrawerActivity.this);
-                  rv.setAdapter(adapter);
-                }
-              }
-
-              carregando.hide();
-              carregando.dismiss();
             }
           });
         }

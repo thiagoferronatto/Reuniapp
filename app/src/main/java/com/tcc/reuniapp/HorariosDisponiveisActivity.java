@@ -251,6 +251,34 @@ public class HorariosDisponiveisActivity extends AppCompatActivity {
           LinearLayoutManager lm = new LinearLayoutManager(HorariosDisponiveisActivity.this);
           lm.setOrientation(LinearLayoutManager.VERTICAL);
           rv.setLayoutManager(lm);
+
+          Collections.sort(sugestoes, new Comparator<Compromisso>() {
+            @Override
+            public int compare(Compromisso o1, Compromisso o2) {
+              long _t1 = Long.parseLong(
+                o1.getData().split("/")[2]
+              ) * 31536000 + Long.parseLong(
+                o1.getData().split("/")[1]
+              ) * 2592000 + Long.parseLong(
+                o1.getData().split("/")[0]
+              ) * 86400;
+
+              String t1 = Long.toString(_t1);
+
+              long _t2 = Long.parseLong(
+                o2.getData().split("/")[2]
+              ) * 31536000 + Long.parseLong(
+                o2.getData().split("/")[1]
+              ) * 2592000 + Long.parseLong(
+                o2.getData().split("/")[0]
+              ) * 86400;
+
+              String t2 = Long.toString(_t2);
+
+              return t1.compareToIgnoreCase(t2);
+            }
+          });
+
           CompromissoAdapter adapter = new CompromissoAdapter(sugestoes, HorariosDisponiveisActivity.this);
           rv.setAdapter(adapter);
         }
