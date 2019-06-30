@@ -1,5 +1,4 @@
-# Reuniapp
-
+![Card do Reuniapp](https://i.imgur.com/PWCvrWN.png)
 ## Português
 
 Meu TCC: o Reuniapp
