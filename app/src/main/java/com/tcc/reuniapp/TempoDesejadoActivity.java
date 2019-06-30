@@ -3,13 +3,10 @@ package com.tcc.reuniapp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
 public class TempoDesejadoActivity extends AppCompatActivity {
-  int _hora, _minuto;
-
   EditText tempoDesejado;
 
   @Override
@@ -23,17 +20,14 @@ public class TempoDesejadoActivity extends AppCompatActivity {
 
     final String dados = getIntent().getStringExtra("texto");
 
-    verificar.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        Intent intent = new Intent(TempoDesejadoActivity.this, HorariosDisponiveisActivity.class);
-        intent.putExtra("texto", dados);
-        String duracao = tempoDesejado.getEditableText().toString();
-        duracao = (Integer.parseInt(duracao) / 60) + ":" + (Integer.parseInt(duracao) % 60);
-        intent.putExtra("duracao", duracao);
-        startActivity(intent);
-        TempoDesejadoActivity.this.finish();
-      }
+    verificar.setOnClickListener(v -> {
+      Intent intent = new Intent(TempoDesejadoActivity.this, HorariosDisponiveisActivity.class);
+      intent.putExtra("texto", dados);
+      String duracao = tempoDesejado.getEditableText().toString();
+      duracao = (Integer.parseInt(duracao) / 60) + ":" + (Integer.parseInt(duracao) % 60);
+      intent.putExtra("duracao", duracao);
+      startActivity(intent);
+      TempoDesejadoActivity.this.finish();
     });
   }
 

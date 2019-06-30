@@ -2,7 +2,6 @@ package com.tcc.reuniapp;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,15 +10,12 @@ import android.widget.TextView;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -66,39 +62,36 @@ public class HorariosDisponiveisActivity extends AppCompatActivity {
     String email = qr.split(";")[qr.split(";").length - 1];
     usuario = email.substring(0, email.indexOf("@"));
 
-    Collections.sort(compromissos, new Comparator<Compromisso>() {
-      @Override
-      public int compare(Compromisso o1, Compromisso o2) {
-        long _t1 = Long.parseLong(
-          o1.getData().split("/")[2]
-        ) * 31536000 + Long.parseLong(
-          o1.getData().split("/")[1]
-        ) * 2592000 + Long.parseLong(
-          o1.getData().split("/")[0]
-        ) * 86400 + Long.parseLong(
-          o1.getHorario().split("-")[0].split(":")[0]
-        ) * 3600 + Long.parseLong(
-          o1.getHorario().split("-")[0].split(":")[1]
-        ) * 60;
+    Collections.sort(compromissos, (o1, o2) -> {
+      long _t1 = Long.parseLong(
+        o1.getData().split("/")[2]
+      ) * 31536000 + Long.parseLong(
+        o1.getData().split("/")[1]
+      ) * 2592000 + Long.parseLong(
+        o1.getData().split("/")[0]
+      ) * 86400 + Long.parseLong(
+        o1.getHorario().split("-")[0].split(":")[0]
+      ) * 3600 + Long.parseLong(
+        o1.getHorario().split("-")[0].split(":")[1]
+      ) * 60;
 
-        String t1 = Long.toString(_t1);
+      String t1 = Long.toString(_t1);
 
-        long _t2 = Long.parseLong(
-          o2.getData().split("/")[2]
-        ) * 31536000 + Long.parseLong(
-          o2.getData().split("/")[1]
-        ) * 2592000 + Long.parseLong(
-          o2.getData().split("/")[0]
-        ) * 86400 + Long.parseLong(
-          o2.getHorario().split("-")[0].split(":")[0]
-        ) * 3600 + Long.parseLong(
-          o2.getHorario().split("-")[0].split(":")[0]
-        ) * 60;
+      long _t2 = Long.parseLong(
+        o2.getData().split("/")[2]
+      ) * 31536000 + Long.parseLong(
+        o2.getData().split("/")[1]
+      ) * 2592000 + Long.parseLong(
+        o2.getData().split("/")[0]
+      ) * 86400 + Long.parseLong(
+        o2.getHorario().split("-")[0].split(":")[0]
+      ) * 3600 + Long.parseLong(
+        o2.getHorario().split("-")[0].split(":")[0]
+      ) * 60;
 
-        String t2 = Long.toString(_t2);
+      String t2 = Long.toString(_t2);
 
-        return t1.compareToIgnoreCase(t2);
-      }
+      return t1.compareToIgnoreCase(t2);
     });
     Compromisso compromisso = new Compromisso(
       "Antes das " + compromissos.get(0).getInicio(),
@@ -151,137 +144,130 @@ public class HorariosDisponiveisActivity extends AppCompatActivity {
     );
     sugestoes.add(compromisso);
 
-    df.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-      @SuppressWarnings("unchecked")
-      @Override
-      public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-        if (task.isSuccessful()) {
-          DocumentSnapshot document = task.getResult();
-          assert document != null;
-          if (document.exists()) {
-            List<Compromisso> l = new ArrayList<>();
-            for (int i = 0; i < Objects.requireNonNull(document.getData()).size(); ++i) {
-              Map<String, Object> x = (Map<String, Object>) document.getData().get(Integer.toString(i));
-              assert x != null;
-              String
-                nome = (String) x.get("nome"),
-                data = (String) x.get("data"),
-                horario = x.get("inicio") + " até " + x.get("termino");
-              Compromisso c = new Compromisso(nome, data, horario);
-              l.add(c);
-            }
+    df.get().addOnCompleteListener(task -> {
+      if (task.isSuccessful()) {
+        DocumentSnapshot document = task.getResult();
+        assert document != null;
+        if (document.exists()) {
+          List<Compromisso> l = new ArrayList<>();
+          for (int i = 0; i < Objects.requireNonNull(document.getData()).size(); ++i) {
+            Map<String, Object> x = (Map<String, Object>) document.getData().get(Integer.toString(i));
+            assert x != null;
+            String
+              nome1 = (String) x.get("nome"),
+              data = (String) x.get("data"),
+              horario = x.get("inicio") + " até " + x.get("termino");
+            Compromisso c12 = new Compromisso(nome1, data, horario);
+            l.add(c12);
+          }
 
-            for (Compromisso i : l) {
-              long inicioI = Long.parseLong(
-                i.getData().split("/")[2]
+          for (Compromisso i : l) {
+            long inicioI = Long.parseLong(
+              i.getData().split("/")[2]
+            ) * 31536000 + Long.parseLong(
+              i.getData().split("/")[1]
+            ) * 2592000 + Long.parseLong(
+              i.getData().split("/")[0]
+            ) * 86400 + Long.parseLong(
+              i.getHorario().split(" até ")[0].split(":")[0]
+            ) * 3600 + Long.parseLong(
+              i.getHorario().split(" até ")[0].split(":")[1]
+            ) * 60;
+
+            long terminoI = Long.parseLong(
+              i.getData().split("/")[2]
+            ) * 31536000 + Long.parseLong(
+              i.getData().split("/")[1]
+            ) * 2592000 + Long.parseLong(
+              i.getData().split("/")[0]
+            ) * 86400 + Long.parseLong(
+              i.getHorario().split(" até ")[1].split(":")[0]
+            ) * 3600 + Long.parseLong(
+              i.getHorario().split(" até ")[1].split(":")[1]
+            ) * 60;
+
+            for (Compromisso j : sugestoes) {
+              String nome1 = j.getNome();
+
+              if (nome1.startsWith("Antes")) {
+                _terminoJ = nome1.split(" ")[2];
+              } else if (!nome1.endsWith("diante")) {
+                _terminoJ = nome1.split(" até ")[1];
+              } else {
+                _terminoJ = "23:59";
+              }
+
+              if (nome1.endsWith("diante")) {
+                _inicioJ = nome1.split(" ")[0];
+              } else if (!nome1.startsWith("Antes")) {
+                _inicioJ = nome1.split(" até ")[0];
+              } else {
+                _inicioJ = "0:0";
+              }
+
+              long inicioJ = Long.parseLong(
+                j.getData().split("/")[2]
               ) * 31536000 + Long.parseLong(
-                i.getData().split("/")[1]
+                j.getData().split("/")[1]
               ) * 2592000 + Long.parseLong(
-                i.getData().split("/")[0]
+                j.getData().split("/")[0]
               ) * 86400 + Long.parseLong(
-                i.getHorario().split(" até ")[0].split(":")[0]
+                _inicioJ.split(":")[0]
               ) * 3600 + Long.parseLong(
-                i.getHorario().split(" até ")[0].split(":")[1]
+                _inicioJ.split(":")[1]
               ) * 60;
 
-              long terminoI = Long.parseLong(
-                i.getData().split("/")[2]
+              long terminoJ = Long.parseLong(
+                j.getData().split("/")[2]
               ) * 31536000 + Long.parseLong(
-                i.getData().split("/")[1]
+                j.getData().split("/")[1]
               ) * 2592000 + Long.parseLong(
-                i.getData().split("/")[0]
+                j.getData().split("/")[0]
               ) * 86400 + Long.parseLong(
-                i.getHorario().split(" até ")[1].split(":")[0]
+                _terminoJ.split(":")[0]
               ) * 3600 + Long.parseLong(
-                i.getHorario().split(" até ")[1].split(":")[1]
+                _terminoJ.split(":")[1]
               ) * 60;
 
-              for (Compromisso j : sugestoes) {
-                String nome = j.getNome();
-
-                if (nome.startsWith("Antes")) {
-                  _terminoJ = nome.split(" ")[2];
-                } else if (!nome.endsWith("diante")) {
-                  _terminoJ = nome.split(" até ")[1];
-                } else {
-                  _terminoJ = "23:59";
-                }
-
-                if (nome.endsWith("diante")) {
-                  _inicioJ = nome.split(" ")[0];
-                } else if (!nome.startsWith("Antes")) {
-                  _inicioJ = nome.split(" até ")[0];
-                } else {
-                  _inicioJ = "0:0";
-                }
-
-                long inicioJ = Long.parseLong(
-                  j.getData().split("/")[2]
-                ) * 31536000 + Long.parseLong(
-                  j.getData().split("/")[1]
-                ) * 2592000 + Long.parseLong(
-                  j.getData().split("/")[0]
-                ) * 86400 + Long.parseLong(
-                  _inicioJ.split(":")[0]
-                ) * 3600 + Long.parseLong(
-                  _inicioJ.split(":")[1]
-                ) * 60;
-
-                long terminoJ = Long.parseLong(
-                  j.getData().split("/")[2]
-                ) * 31536000 + Long.parseLong(
-                  j.getData().split("/")[1]
-                ) * 2592000 + Long.parseLong(
-                  j.getData().split("/")[0]
-                ) * 86400 + Long.parseLong(
-                  _terminoJ.split(":")[0]
-                ) * 3600 + Long.parseLong(
-                  _terminoJ.split(":")[1]
-                ) * 60;
-
-                if ((inicioI >= inicioJ && inicioI < terminoJ) ||
-                  (terminoI > inicioJ && terminoI <= terminoJ) ||
-                  (inicioI <= inicioJ && terminoI >= terminoJ)) {
-                  sugestoes.get(sugestoes.indexOf(j)).setCor("vermelho");
-                }
+              if ((inicioI >= inicioJ && inicioI < terminoJ) ||
+                (terminoI > inicioJ && terminoI <= terminoJ) ||
+                (inicioI <= inicioJ && terminoI >= terminoJ)) {
+                sugestoes.get(sugestoes.indexOf(j)).setCor("vermelho");
               }
             }
           }
-          rv = findViewById(R.id.horarios_disponiveis);
-          LinearLayoutManager lm = new LinearLayoutManager(HorariosDisponiveisActivity.this);
-          lm.setOrientation(LinearLayoutManager.VERTICAL);
-          rv.setLayoutManager(lm);
-
-          Collections.sort(sugestoes, new Comparator<Compromisso>() {
-            @Override
-            public int compare(Compromisso o1, Compromisso o2) {
-              long _t1 = Long.parseLong(
-                o1.getData().split("/")[2]
-              ) * 31536000 + Long.parseLong(
-                o1.getData().split("/")[1]
-              ) * 2592000 + Long.parseLong(
-                o1.getData().split("/")[0]
-              ) * 86400;
-
-              String t1 = Long.toString(_t1);
-
-              long _t2 = Long.parseLong(
-                o2.getData().split("/")[2]
-              ) * 31536000 + Long.parseLong(
-                o2.getData().split("/")[1]
-              ) * 2592000 + Long.parseLong(
-                o2.getData().split("/")[0]
-              ) * 86400;
-
-              String t2 = Long.toString(_t2);
-
-              return t1.compareToIgnoreCase(t2);
-            }
-          });
-
-          CompromissoAdapter adapter = new CompromissoAdapter(sugestoes, HorariosDisponiveisActivity.this);
-          rv.setAdapter(adapter);
         }
+        rv = findViewById(R.id.horarios_disponiveis);
+        LinearLayoutManager lm = new LinearLayoutManager(HorariosDisponiveisActivity.this);
+        lm.setOrientation(LinearLayoutManager.VERTICAL);
+        rv.setLayoutManager(lm);
+
+        Collections.sort(sugestoes, (o1, o2) -> {
+          long _t1 = Long.parseLong(
+            o1.getData().split("/")[2]
+          ) * 31536000 + Long.parseLong(
+            o1.getData().split("/")[1]
+          ) * 2592000 + Long.parseLong(
+            o1.getData().split("/")[0]
+          ) * 86400;
+
+          String t1 = Long.toString(_t1);
+
+          long _t2 = Long.parseLong(
+            o2.getData().split("/")[2]
+          ) * 31536000 + Long.parseLong(
+            o2.getData().split("/")[1]
+          ) * 2592000 + Long.parseLong(
+            o2.getData().split("/")[0]
+          ) * 86400;
+
+          String t2 = Long.toString(_t2);
+
+          return t1.compareToIgnoreCase(t2);
+        });
+
+        CompromissoAdapter adapter = new CompromissoAdapter(sugestoes, HorariosDisponiveisActivity.this);
+        rv.setAdapter(adapter);
       }
     });
   }

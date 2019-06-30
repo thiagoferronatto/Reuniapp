@@ -29,24 +29,15 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-
-import javax.annotation.Nullable;
 
 public class AgendaDrawerActivity extends AppCompatActivity
   implements NavigationView.OnNavigationItemSelectedListener {
@@ -81,12 +72,9 @@ public class AgendaDrawerActivity extends AppCompatActivity
 
 
     Button criarCompromisso = findViewById(R.id.btn_novo_compromisso);
-    criarCompromisso.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        startActivity(new Intent(AgendaDrawerActivity.this, CompromissoActivity.class));
-      }
-    });
+    criarCompromisso.setOnClickListener(v ->
+      startActivity(new Intent(AgendaDrawerActivity.this, CompromissoActivity.class))
+    );
 
     DrawerLayout drawer = findViewById(R.id.drawer_layout);
     NavigationView navigationView = findViewById(R.id.nav_view);
@@ -117,16 +105,13 @@ public class AgendaDrawerActivity extends AppCompatActivity
     }
 
     Button qr = findViewById(R.id.qr);
-    qr.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        if (ContextCompat.checkSelfPermission(
-          AgendaDrawerActivity.this, Manifest.permission.CAMERA)
-          == PackageManager.PERMISSION_DENIED) {
-          ActivityCompat.requestPermissions(AgendaDrawerActivity.this, new String[]{Manifest.permission.CAMERA}, 1804);
-        } else {
-          startActivity(new Intent(AgendaDrawerActivity.this, DecoderActivity.class));
-        }
+    qr.setOnClickListener(v -> {
+      if (ContextCompat.checkSelfPermission(
+        AgendaDrawerActivity.this, Manifest.permission.CAMERA)
+        == PackageManager.PERMISSION_DENIED) {
+        ActivityCompat.requestPermissions(AgendaDrawerActivity.this, new String[]{Manifest.permission.CAMERA}, 1804);
+      } else {
+        startActivity(new Intent(AgendaDrawerActivity.this, DecoderActivity.class));
       }
     });
   }
@@ -145,77 +130,71 @@ public class AgendaDrawerActivity extends AppCompatActivity
     final AlertDialog carregando = new AlertDialog.Builder(this)
       .setTitle("Aguarde")
       .setMessage("Carregando compromissos")
+      .setCancelable(false)
       .show();
 
-    df.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-      @SuppressWarnings("unchecked")
-      @Override
-      public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-        if (task.isSuccessful()) {
-          DocumentSnapshot document = task.getResult();
-          assert document != null;
-          if (document.exists()) {
-            List<Compromisso> l = new ArrayList<>();
-            for (int i = 0; i < Objects.requireNonNull(document.getData()).size(); ++i) {
-              Map<String, Object> x = (Map<String, Object>) document.getData().get(Integer.toString(i));
-              assert x != null;
-              String
-                nome = (String) x.get("nome"),
-                data = (String) x.get("data"),
-                horario = x.get("inicio") + " até " + x.get("termino"),
-                participantes = "Com: " + x.get("participantes");
-              Compromisso c = new Compromisso(nome, data, horario, participantes);
-              l.add(c);
-            }
-            compromissos = l;
-
-            Collections.sort(l, new Comparator<Compromisso>() {
-              @Override
-              public int compare(Compromisso o1, Compromisso o2) {
-                long _t1 = Long.parseLong(
-                  o1.getData().split("/")[2]
-                ) * 31536000 + Long.parseLong(
-                  o1.getData().split("/")[1]
-                ) * 2592000 + Long.parseLong(
-                  o1.getData().split("/")[0]
-                ) * 86400 + Long.parseLong(
-                  o1.getHorario().split(" até ")[0].split(":")[0]
-                ) * 3600 + Long.parseLong(
-                  o1.getHorario().split(" até ")[0].split(":")[1]
-                ) * 60;
-
-                String t1 = Long.toString(_t1);
-
-                long _t2 = Long.parseLong(
-                  o2.getData().split("/")[2]
-                ) * 31536000 + Long.parseLong(
-                  o2.getData().split("/")[1]
-                ) * 2592000 + Long.parseLong(
-                  o2.getData().split("/")[0]
-                ) * 86400 + Long.parseLong(
-                  o2.getHorario().split(" até ")[0].split(":")[0]
-                ) * 3600 + Long.parseLong(
-                  o2.getHorario().split(" até ")[0].split(":")[1]
-                ) * 60;
-
-                String t2 = Long.toString(_t2);
-
-                return t1.compareToIgnoreCase(t2);
-              }
-            });
-
-            rv = findViewById(R.id.lista_usuarios);
-            LinearLayoutManager lm = new LinearLayoutManager(AgendaDrawerActivity.this);
-            lm.setOrientation(LinearLayoutManager.VERTICAL);
-            rv.setLayoutManager(lm);
-            CompromissoAdapter adapter = new CompromissoAdapter(compromissos, AgendaDrawerActivity.this);
-            rv.setAdapter(adapter);
+    df.get().addOnCompleteListener(task -> {
+      if (task.isSuccessful()) {
+        DocumentSnapshot document = task.getResult();
+        assert document != null;
+        if (document.exists()) {
+          List<Compromisso> l = new ArrayList<>();
+          for (int i = 0; i < Objects.requireNonNull(document.getData()).size(); ++i) {
+            Map<String, Object> x = (Map<String, Object>) document.getData().get(Integer.toString(i));
+            assert x != null;
+            String
+              nome = (String) x.get("nome"),
+              data = (String) x.get("data"),
+              horario = x.get("inicio") + " até " + x.get("termino"),
+              participantes = "Com: " + x.get("participantes");
+            Compromisso c = new Compromisso(nome, data, horario, participantes);
+            l.add(c);
           }
-        }
+          compromissos = l;
 
-        carregando.hide();
-        carregando.dismiss();
+          Collections.sort(l, (o1, o2) -> {
+            long _t1 = Long.parseLong(
+              o1.getData().split("/")[2]
+            ) * 31536000 + Long.parseLong(
+              o1.getData().split("/")[1]
+            ) * 2592000 + Long.parseLong(
+              o1.getData().split("/")[0]
+            ) * 86400 + Long.parseLong(
+              o1.getHorario().split(" até ")[0].split(":")[0]
+            ) * 3600 + Long.parseLong(
+              o1.getHorario().split(" até ")[0].split(":")[1]
+            ) * 60;
+
+            String t1 = Long.toString(_t1);
+
+            long _t2 = Long.parseLong(
+              o2.getData().split("/")[2]
+            ) * 31536000 + Long.parseLong(
+              o2.getData().split("/")[1]
+            ) * 2592000 + Long.parseLong(
+              o2.getData().split("/")[0]
+            ) * 86400 + Long.parseLong(
+              o2.getHorario().split(" até ")[0].split(":")[0]
+            ) * 3600 + Long.parseLong(
+              o2.getHorario().split(" até ")[0].split(":")[1]
+            ) * 60;
+
+            String t2 = Long.toString(_t2);
+
+            return t1.compareToIgnoreCase(t2);
+          });
+
+          rv = findViewById(R.id.lista_usuarios);
+          LinearLayoutManager lm = new LinearLayoutManager(AgendaDrawerActivity.this);
+          lm.setOrientation(LinearLayoutManager.VERTICAL);
+          rv.setLayoutManager(lm);
+          CompromissoAdapter adapter = new CompromissoAdapter(compromissos, AgendaDrawerActivity.this);
+          rv.setAdapter(adapter);
+        }
       }
+
+      carregando.hide();
+      carregando.dismiss();
     });
 
     String email = conta.getEmail();
@@ -223,99 +202,73 @@ public class AgendaDrawerActivity extends AppCompatActivity
     final DocumentReference docRef =
       db.collection("compromissos").document(email.substring(0, email.indexOf("@")));
 
-    docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
-      @Override
-      public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
-        final AlertDialog carregando = new AlertDialog.Builder(AgendaDrawerActivity.this)
-          .setTitle("Aguarde")
-          .setMessage("Carregando compromissos")
-          .show();
+    docRef.addSnapshotListener((documentSnapshot, e1) -> {
+      final AlertDialog carregando1 = new AlertDialog.Builder(AgendaDrawerActivity.this)
+        .setTitle("Aguarde")
+        .setMessage("Carregando compromissos")
+        .setCancelable(false)
+        .show();
 
-        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-          @Override
-          public void onSuccess(DocumentSnapshot document) {
-            assert document != null;
-            if (document.exists()) {
-              List<Compromisso> l = new ArrayList<>();
-              for (int i = 0; i < Objects.requireNonNull(document.getData()).size(); ++i) {
-                Map<String, Object> x = (Map<String, Object>) document.getData().get(Integer.toString(i));
-                assert x != null;
-                String
-                  nome = (String) x.get("nome"),
-                  data = (String) x.get("data"),
-                  horario = x.get("inicio") + " até " + x.get("termino"),
-                  participantes = "Com: " + x.get("participantes");
-                Compromisso c = new Compromisso(nome, data, horario, participantes);
-                l.add(c);
-              }
-              compromissos = l;
-
-              Collections.sort(l, new Comparator<Compromisso>() {
-                @Override
-                public int compare(Compromisso o1, Compromisso o2) {
-                  long _t1 = Long.parseLong(
-                    o1.getData().split("/")[2]
-                  ) * 31536000 + Long.parseLong(
-                    o1.getData().split("/")[1]
-                  ) * 2592000 + Long.parseLong(
-                    o1.getData().split("/")[0]
-                  ) * 86400 + Long.parseLong(
-                    o1.getHorario().split(" até ")[0].split(":")[0]
-                  ) * 3600 + Long.parseLong(
-                    o1.getHorario().split(" até ")[0].split(":")[1]
-                  ) * 60;
-
-                  String t1 = Long.toString(_t1);
-
-                  long _t2 = Long.parseLong(
-                    o2.getData().split("/")[2]
-                  ) * 31536000 + Long.parseLong(
-                    o2.getData().split("/")[1]
-                  ) * 2592000 + Long.parseLong(
-                    o2.getData().split("/")[0]
-                  ) * 86400 + Long.parseLong(
-                    o2.getHorario().split(" até ")[0].split(":")[0]
-                  ) * 3600 + Long.parseLong(
-                    o2.getHorario().split(" até ")[0].split(":")[1]
-                  ) * 60;
-
-                  String t2 = Long.toString(_t2);
-
-                  return t1.compareToIgnoreCase(t2);
-                }
-              });
-
-              rv = findViewById(R.id.lista_usuarios);
-              LinearLayoutManager lm = new LinearLayoutManager(AgendaDrawerActivity.this);
-              lm.setOrientation(LinearLayoutManager.VERTICAL);
-              rv.setLayoutManager(lm);
-              CompromissoAdapter adapter = new CompromissoAdapter(compromissos, AgendaDrawerActivity.this);
-              rv.setAdapter(adapter);
-
-              carregando.hide();
-              carregando.dismiss();
-            }
+      docRef.get().addOnSuccessListener(document -> {
+        assert document != null;
+        if (document.exists()) {
+          List<Compromisso> l = new ArrayList<>();
+          for (int i = 0; i < Objects.requireNonNull(document.getData()).size(); ++i) {
+            Map<String, Object> x = (Map<String, Object>) document.getData().get(Integer.toString(i));
+            assert x != null;
+            String
+              nome = (String) x.get("nome"),
+              data = (String) x.get("data"),
+              horario = x.get("inicio") + " até " + x.get("termino"),
+              participantes = "Com: " + x.get("participantes");
+            Compromisso c = new Compromisso(nome, data, horario, participantes);
+            l.add(c);
           }
-        });
-      }
-    });
+          compromissos = l;
 
-    db.collection("compromissos").addSnapshotListener(new EventListener<QuerySnapshot>() {
-      @Override
-      public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException ex) {
-        if (queryDocumentSnapshots != null) {
-          DocumentReference df = db.collection("compromissos").document(e.substring(0, e.indexOf("@")));
+          Collections.sort(compromissos, (o1, o2) -> {
+            long _t1 = Long.parseLong(
+              o1.getData().split("/")[2]
+            ) * 31536000 + Long.parseLong(
+              o1.getData().split("/")[1]
+            ) * 2592000 + Long.parseLong(
+              o1.getData().split("/")[0]
+            ) * 86400 + Long.parseLong(
+              o1.getHorario().split(" até ")[0].split(":")[0]
+            ) * 3600 + Long.parseLong(
+              o1.getHorario().split(" até ")[0].split(":")[1]
+            ) * 60;
 
+            String t1 = Long.toString(_t1);
 
-          df.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @SuppressWarnings("unchecked")
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+            long _t2 = Long.parseLong(
+              o2.getData().split("/")[2]
+            ) * 31536000 + Long.parseLong(
+              o2.getData().split("/")[1]
+            ) * 2592000 + Long.parseLong(
+              o2.getData().split("/")[0]
+            ) * 86400 + Long.parseLong(
+              o2.getHorario().split(" até ")[0].split(":")[0]
+            ) * 3600 + Long.parseLong(
+              o2.getHorario().split(" até ")[0].split(":")[1]
+            ) * 60;
 
-            }
+            String t2 = Long.toString(_t2);
+
+            return t2.compareToIgnoreCase(t1);
           });
+
+          rv = findViewById(R.id.lista_usuarios);
+          LinearLayoutManager lm = new LinearLayoutManager(AgendaDrawerActivity.this);
+          lm.setOrientation(LinearLayoutManager.VERTICAL);
+          rv.setLayoutManager(lm);
+          CompromissoAdapter adapter = new CompromissoAdapter(compromissos, AgendaDrawerActivity.this);
+          rv.setAdapter(adapter);
+
+          carregando1.hide();
+          carregando1.dismiss();
         }
-      }
+      });
     });
   }
 
@@ -327,6 +280,13 @@ public class AgendaDrawerActivity extends AppCompatActivity
       if (grantResults.length > 0
         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
         startActivity(new Intent(this, DecoderActivity.class));
+      } else {
+        new AlertDialog.Builder(this)
+          .setTitle("Acesso à câmera negado!")
+          .setMessage("Para fazer uso dessa função do aplicativo, aceite a permissão de uso da câmera. Nenhum dado capturado será salvo pelo app.")
+          .setPositiveButton("OK", null)
+          .setCancelable(false)
+          .show();
       }
     }
   }
@@ -390,11 +350,9 @@ public class AgendaDrawerActivity extends AppCompatActivity
 
   private void sair() {
     mGoogleSignInClient.signOut()
-      .addOnCompleteListener(this, new OnCompleteListener<Void>() {
-        @Override
-        public void onComplete(@NonNull Task<Void> task) {
-          startActivity(new Intent(AgendaDrawerActivity.this, LoginActivity.class));
-        }
+      .addOnCompleteListener(this, task -> {
+        startActivity(new Intent(AgendaDrawerActivity.this, LoginActivity.class));
+        AgendaDrawerActivity.this.finish();
       });
   }
 }

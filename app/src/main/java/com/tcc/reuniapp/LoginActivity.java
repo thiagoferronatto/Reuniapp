@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -36,12 +35,7 @@ public class LoginActivity extends AppCompatActivity {
     if (conta == null) {
       setContentView(R.layout.activity_login);
       SignInButton btnLogin = findViewById(R.id.btnLoginGoogle);
-      btnLogin.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-          startActivityForResult(mGoogleSignInClient.getSignInIntent(), 1);
-        }
-      });
+      btnLogin.setOnClickListener(v -> startActivityForResult(mGoogleSignInClient.getSignInIntent(), 1));
     } else {
       startActivity(new Intent(this, AgendaDrawerActivity.class));
       this.finish();
@@ -68,5 +62,11 @@ public class LoginActivity extends AppCompatActivity {
         // vish...
       }
     }
+  }
+
+  @Override
+  public void onBackPressed() {
+    super.onBackPressed();
+    finishAffinity();
   }
 }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
   android:layout_marginBottom="5dp">
@@ -7,49 +8,63 @@
   <android.support.v7.widget.CardView
     android:id="@+id/cardview"
     android:layout_width="match_parent"
-    android:layout_height="50dp">
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="5dp"
+    android:elevation="50dp"
+    app:cardCornerRadius="4dp">
 
-    <LinearLayout
+    <FrameLayout
+      android:id="@+id/frame_item"
+      android:layout_width="5dp"
+      android:layout_height="match_parent"
+      android:background="@color/colorPrimary" />
+
+    <android.support.constraint.ConstraintLayout
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:orientation="horizontal"
-      android:weightSum="100">
+      android:layout_marginStart="5dp">
 
       <TextView
         android:id="@+id/nome_item"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:layout_weight="50"
         android:text="@string/compromisso"
         android:textAlignment="viewStart"
-        android:textSize="24sp" />
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/horario_item"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-      <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="50"
-        android:orientation="vertical"
-        android:weightSum="100">
+      <TextView
+        android:id="@+id/data_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/dd_mm_aa"
+        android:textAlignment="viewEnd"
+        app:layout_constraintBottom_toTopOf="@+id/horario_item"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-          android:id="@+id/data_item"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="5dp"
-          android:layout_marginEnd="15dp"
-          android:text="@string/dd_mm_aa"
-          android:textAlignment="viewEnd" />
+      <TextView
+        android:id="@+id/horario_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/hh_mm_ate_hh_mm"
+        android:textAlignment="viewEnd"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+    </android.support.constraint.ConstraintLayout>
 
-        <TextView
-          android:id="@+id/horario_item"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_marginEnd="15dp"
-          android:text="@string/hh_mm_ate_hh_mm"
-          android:textAlignment="viewEnd" />
-      </LinearLayout>
-    </LinearLayout>
   </android.support.v7.widget.CardView>
 </LinearLayout>
