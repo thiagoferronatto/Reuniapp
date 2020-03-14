@@ -13,8 +13,8 @@ _Bugs_ e _crashes_ podem ser encontrados; se for o caso, comunicar via [thiagofe
 
 My final project for high school: Reuniapp
 
-It's a digital schedule app that suggests the best possible times for new appointments between two people (group meetings may be added by me in the future, or by you guys in a pull request).
+It's a digital schedule that suggests the best possible times for new appointments between two people (group meetings may be added by me in the future, or by you guys in a pull request).
 
-It uses a NoSQL database through Google's Firebase Firestore platform.
+It uses a NoSQL database through Google's Firebase platform.
 
 Bugs and crashes may be found; if you do run into one, let me know through [thiagoferronatto18@gmail.com](mailto:thiagoferronatto18@gmail.com) or maybe help us out trying to fix it yourself ;).
